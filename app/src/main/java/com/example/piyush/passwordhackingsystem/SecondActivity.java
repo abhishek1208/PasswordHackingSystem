@@ -43,8 +43,6 @@ public class SecondActivity extends AppCompatActivity {
         this.submit = (Button) findViewById(R.id.second_activity_btn_submit);
 
 
-
-
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +52,7 @@ public class SecondActivity extends AppCompatActivity {
                 containsLowerCase = lowerCase.isChecked();
                 containsUpperCase = upperCase.isChecked();
                 containsNumber = number.isChecked();
-                containsSpecialCharacter =specialCharacter.isChecked();
+                containsSpecialCharacter = specialCharacter.isChecked();
 
                 totalPermutations = getTotalPermutations();
                 ETA = getETA();
@@ -100,14 +98,14 @@ public class SecondActivity extends AppCompatActivity {
 
                 Integer tempForSpots = spots;
                 BigInteger toBeAdded = new BigInteger("1");
-                while(tempForSpots > 0) {
+                while (tempForSpots > 0) {
 
-                    toBeAdded=toBeAdded.multiply(total);
+                    toBeAdded = toBeAdded.multiply(total);
 
                     tempForSpots--;
                 }
 
-                retVal=retVal.add(toBeAdded);
+                retVal = retVal.add(toBeAdded);
 
             }
             temp++;
@@ -122,15 +120,15 @@ public class SecondActivity extends AppCompatActivity {
 
         BigDecimal totalPers = new BigDecimal(totalPermutations);
 
-        double startTime =  System.currentTimeMillis();
+        double startTime = System.currentTimeMillis();
 
-        for (double i = 0; i < 1.79769313486231570E+6 ; i++) {
+        for (double i = 0; i < 1.79769313486231570E+6; i++) {
             if ("abcdqewadvavfdsbffbdfgnhfjgdntyutdcbtfynbsv".equals("vndalisvdavdadbfddsfbadfdvnvlfa")) {
                 //Random Comparison between two strings.
             }
         }
 
-        double endTime =  System.currentTimeMillis();
+        double endTime = System.currentTimeMillis();
 
         Double sampleTimeElapsed = endTime - startTime;
 
@@ -139,51 +137,50 @@ public class SecondActivity extends AppCompatActivity {
         BigDecimal ste = new BigDecimal(sampleTimeElapsed.toString());
 
 
-
-        ste = ste.divide(new BigDecimal("1.79769313486231570E+6"),1000,RoundingMode.HALF_UP);
+        ste = ste.divide(new BigDecimal("1.79769313486231570E+6"), 1000, RoundingMode.HALF_UP);
         retVal = totalPers.multiply(ste);
 
         return retVal;
 
     }
-    public static String etaBeautiful(BigDecimal eta){
+
+    public static String etaBeautiful(BigDecimal eta) {
         BigDecimal conversion;
-        String retval="";
-        BigDecimal secondsVal=new BigDecimal("100");
-        BigDecimal minuteVal=new BigDecimal("60000");
-        BigDecimal hourVal=new BigDecimal("3.6e+6");
-        BigDecimal dayVal=new BigDecimal("8.64e+7");
-        BigDecimal yearVal=new BigDecimal("3.154e+10");
-        BigDecimal monthVal=new BigDecimal("2.628e+9");
-        if(eta.compareTo(yearVal)==1){
-            conversion=eta.divide(yearVal,2,RoundingMode.HALF_UP);
+        String retval = "";
+        BigDecimal milliVal = new BigDecimal(("1"));
+        BigDecimal secondsVal = new BigDecimal("100");
+        BigDecimal minuteVal = new BigDecimal("60000");
+        BigDecimal hourVal = new BigDecimal("3.6e+6");
+        BigDecimal dayVal = new BigDecimal("8.64e+7");
+        BigDecimal yearVal = new BigDecimal("3.154e+10");
+        BigDecimal monthVal = new BigDecimal("2.628e+9");
+        if (eta.compareTo(yearVal) == 1) {
+            conversion = eta.divide(yearVal, 2, RoundingMode.HALF_UP);
 
-            retval=conversion.toString()+ " Years";
-        }
-        else if(eta.compareTo(monthVal)==1){
-            conversion=eta.divide(monthVal,2,RoundingMode.HALF_UP);
+            retval = conversion.toString() + " Years";
+        } else if (eta.compareTo(monthVal) == 1) {
+            conversion = eta.divide(monthVal, 2, RoundingMode.HALF_UP);
 
-            retval=conversion.toString()+ " Months";
-        }
-        else if(eta.compareTo(dayVal)==1){
-            conversion=eta.divide(dayVal,2,RoundingMode.HALF_UP);
+            retval = conversion.toString() + " Months";
+        } else if (eta.compareTo(dayVal) == 1) {
+            conversion = eta.divide(dayVal, 2, RoundingMode.HALF_UP);
 
-            retval=conversion.toString()+ " Days";
-        }
-        else if(eta.compareTo(hourVal)==1){
-            conversion=eta.divide(hourVal,2,RoundingMode.HALF_UP);
+            retval = conversion.toString() + " Days";
+        } else if (eta.compareTo(hourVal) == 1) {
+            conversion = eta.divide(hourVal, 2, RoundingMode.HALF_UP);
 
-            retval=conversion.toString()+ " Hours";
-        }
-        else if(eta.compareTo(minuteVal)==1){
-            conversion=eta.divide(minuteVal,2,RoundingMode.HALF_UP);
+            retval = conversion.toString() + " Hours";
+        } else if (eta.compareTo(minuteVal) == 1) {
+            conversion = eta.divide(minuteVal, 2, RoundingMode.HALF_UP);
 
-            retval=conversion.toString()+ " Minutes";
-        }
-        else {
-            conversion=eta.divide(secondsVal,2,RoundingMode.HALF_UP);
+            retval = conversion.toString() + " Minutes";
+        } else if (eta.compareTo(secondsVal) == 1) {
+            conversion = eta.divide(secondsVal, 2, RoundingMode.HALF_UP);
 
-            retval=conversion.toString()+ " Seconds";
+            retval = conversion.toString() + " Seconds";
+        } else {
+            conversion = eta.divide(milliVal, 2, RoundingMode.HALF_UP);
+            retval = conversion.toString() + " Milliseconds";
         }
 
         return retval;
