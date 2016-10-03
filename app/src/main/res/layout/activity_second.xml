@@ -22,15 +22,16 @@
 
     <EditText
         android:id="@+id/second_activity_et_minRange"
+        android:ems="4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:hint="5"
         android:inputType="number"
 
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
+        android:layout_alignTop="@+id/second_activity_et_maxRange"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView" />
     <!--android:layout_marginLeft="48dp"-->
     <!--android:layout_marginStart="48dp"-->
         />
@@ -43,36 +44,38 @@
         android:text="to"
         android:layout_alignBottom="@+id/second_activity_et_minRange"
         android:layout_toRightOf="@+id/second_activity_et_minRange"
-         />
+        android:layout_toEndOf="@+id/second_activity_et_minRange" />
 
     <EditText
         android:id="@+id/second_activity_et_maxRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="10"
+        android:ems="4"
         android:inputType="number"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/second_activity_et_startsFrom"
-        android:layout_alignStart="@+id/second_activity_et_startsFrom" />
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2" />
 
     <TextView
         android:textAppearance="?android:textAppearanceLarge"
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Starts From"
+        android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="68dp"
-        android:text="Starts From" />
+        android:layout_marginTop="54dp" />
 
     <EditText
         android:id="@+id/second_activity_et_startsFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="hey"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/second_activity_et_maxRange"
+        android:layout_alignStart="@+id/second_activity_et_maxRange" />
 
     <TextView
         android:textAppearance="?android:textAppearanceLarge"
@@ -80,7 +83,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
-        android:layout_below="@+id/second_activity_et_startsFrom"
+        android:layout_marginTop="84dp"
+        android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -117,8 +121,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/second_activity_cb_number"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
+        android:layout_toLeftOf="@+id/test"
+        android:layout_toStartOf="@+id/test" />
 
     <Button
         android:text="Submit"
@@ -129,12 +133,23 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:text="jfdskfnkjdsnjlkejalvlkeslkjvflkev"
         android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Enter Submit!"
+        android:layout_below="@+id/textView5"
+        android:layout_toRightOf="@+id/textView3"
+        android:layout_toEndOf="@+id/textView3"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hacking Time"
+        android:id="@+id/textView5"
+        android:textSize="30dp"
         android:layout_below="@+id/second_activity_cb_specialCharacter"
-        android:layout_alignRight="@+id/second_activity_et_maxRange"
-        android:layout_alignEnd="@+id/second_activity_et_maxRange" />
+        android:layout_toRightOf="@+id/second_activity_cb_specialCharacter"
+        android:layout_toEndOf="@+id/second_activity_cb_specialCharacter" />
 
 </RelativeLayout>
