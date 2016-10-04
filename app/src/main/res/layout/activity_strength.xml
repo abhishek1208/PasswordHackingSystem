@@ -200,7 +200,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sequential Letters"/>
+                android:text="Sequential Letters(3+)"/>
             <TextView
                 android:id="@+id/tv_sequentialletters"
                 android:layout_width="wrap_content"
@@ -214,27 +214,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sequential Numbers"/>
+                android:text="Sequential Numbers(3+)"/>
             <TextView
                 android:id="@+id/tv_sequentialnumbers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="num"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sequential Symbols"/>
-            <TextView
-                android:id="@+id/tv_sequentialsymbols"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="num"/>
-        </LinearLayout>
+
     </LinearLayout>
 
     <Button
@@ -260,5 +247,15 @@
         android:layout_above="@+id/btn_commonpass"
         android:layout_alignLeft="@+id/btn_commonpass"
         android:layout_alignStart="@+id/btn_commonpass" />
+
+    <TextView
+        android:text="Yes/No"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/tv_strentghperc"
+        android:layout_alignStart="@+id/tv_strentghperc"
+        android:layout_marginBottom="29dp"
+        android:id="@+id/tv_common" />
 
 </RelativeLayout>
