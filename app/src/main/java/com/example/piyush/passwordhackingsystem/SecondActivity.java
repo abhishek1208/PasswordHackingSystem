@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,7 +33,7 @@ public class SecondActivity extends AppCompatActivity {
     BigDecimal ETA;
 
     TextView tv;
-
+    public static final String TAG="SecondActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +76,8 @@ public class SecondActivity extends AppCompatActivity {
                 } else {
 
                     Intent i = new Intent(getApplicationContext(), PasswordGuessingActivity.class);
-                    i.putExtra("ETA", etaBeautiful(ETA).toString());
+                    i.putExtra("ETA", ETA.toBigInteger().toString());
+                    i.putExtra("ETAbeauty", etaBeautiful(ETA));
                     i.putExtra("minRange", minRange);
                     i.putExtra("maxRange", maxRange);
                     i.putExtra("startsFrom", startsFrom);
@@ -83,9 +85,10 @@ public class SecondActivity extends AppCompatActivity {
                     i.putExtra("containsUpperCase", containsUpperCase);
                     i.putExtra("containsNumber", containsNumber);
                     i.putExtra("containsSpecialCharacter", containsSpecialCharacter);
-//                i.putExtra("actualPassword",actualPassword);
-                    i.putExtra("actualPassword", removeLater.getText().toString());
+                i.putExtra("actualPassword",actualPassword);
+//                    i.putExtra("actualPassword", removeLater.getText().toString());
                     i.putExtra("totalPermutations",totalPermutations.toString());
+                    Log.d(TAG, "onClick: Eta beautiful"+etaBeautiful(ETA));
 
                     startActivity(i);
                 }
@@ -168,7 +171,7 @@ public class SecondActivity extends AppCompatActivity {
 
 
         ste = ste.divide(new BigDecimal("1.79769313486231570E+6"), 1000, RoundingMode.HALF_UP);
-        retVal = totalPers.multiply(ste);
+        retVal = totalPers.multiply(ste).multiply(new BigDecimal("10000"));
 
         return retVal;
 
@@ -178,7 +181,7 @@ public class SecondActivity extends AppCompatActivity {
         BigDecimal conversion;
         String retval = "";
         BigDecimal milliVal = new BigDecimal(("1"));
-        BigDecimal secondsVal = new BigDecimal("100");
+        BigDecimal secondsVal = new BigDecimal("1000");
         BigDecimal minuteVal = new BigDecimal("60000");
         BigDecimal hourVal = new BigDecimal("3.6e+6");
         BigDecimal dayVal = new BigDecimal("8.64e+7");
