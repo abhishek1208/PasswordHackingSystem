@@ -67,6 +67,8 @@ public class PasswordGuessingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                final long startTime=System.currentTimeMillis();
+
                 CheckerPOJO checkerPOJO = new CheckerPOJO(actualPassword,minR,maxR,startsFrom,containsNumber,
                         containsUpper,containsLower,containsSpecial);
 
@@ -78,6 +80,8 @@ public class PasswordGuessingActivity extends AppCompatActivity {
 
                     @Override
                     protected void onPostExecute(Pair pair) {
+                         long endTime;
+
                         super.onPostExecute(pair);
                         if(pair.checker) {
 
@@ -86,6 +90,8 @@ public class PasswordGuessingActivity extends AppCompatActivity {
                         else{
                             toShowPassword.setText("Parameters Were Wrong");
                         }
+                        endTime=System.currentTimeMillis();
+                        Log.d(TAG, "onPostExecute: Time taken"+String.valueOf(endTime-startTime));
                     }
 
                     @Override
