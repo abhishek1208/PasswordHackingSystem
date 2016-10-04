@@ -27,7 +27,7 @@ public class SecondActivity extends AppCompatActivity {
     Button submit;
     String actualPassword;
 
-    EditText removeLater;
+//    EditText removeLater;
 
     BigInteger totalPermutations;
     BigDecimal ETA;
@@ -50,7 +50,7 @@ public class SecondActivity extends AppCompatActivity {
         this.number = (CheckBox) findViewById(R.id.second_activity_cb_number);
         this.specialCharacter = (CheckBox) findViewById(R.id.second_activity_cb_specialCharacter);
         this.submit = (Button) findViewById(R.id.second_activity_btn_submit);
-        this.removeLater = (EditText) findViewById(R.id.removeLater);
+//        this.removeLater = (EditText) findViewById(R.id.removeLater);
 
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override

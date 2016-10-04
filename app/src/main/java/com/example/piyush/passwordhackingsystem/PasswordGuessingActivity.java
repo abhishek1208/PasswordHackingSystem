@@ -1,6 +1,11 @@
 package com.example.piyush.passwordhackingsystem;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,6 +40,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
     String totalPermutations;
     ProgressBar progressBar;
 
+    public static final int PERM_REQ_CODE_GUESSING_ACT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +79,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
 
         } else {
 
-           btn_brute.setEnabled(true);
+            btn_brute.setEnabled(true);
         }
 
 
@@ -110,18 +117,34 @@ public class PasswordGuessingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                new DictionaryReadTask() {
-                    @Override
-                    protected void onPostExecute(Pair pair) {
-                        super.onPostExecute(pair);
-                        if (pair.checker) {
 
-                            toShowPassword.setText(pair.password);
-                        } else {
-                            toShowPassword.setText("Not in dictionary");
+                int permResult = ContextCompat.checkSelfPermission(PasswordGuessingActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+
+
+                if (permResult == PackageManager.PERMISSION_GRANTED) {
+                    new DictionaryReadTask() {
+                        @Override
+                        protected void onPostExecute(Pair pair) {
+                            super.onPostExecute(pair);
+                            if (pair.checker) {
+
+                                toShowPassword.setText(pair.password);
+                            } else {
+                                toShowPassword.setText("Not in dictionary");
+                            }
                         }
-                    }
-                }.execute(actualPassword);
+                    }.execute(actualPassword);
+
+                } else {
+
+
+                    ActivityCompat.requestPermissions(PasswordGuessingActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PERM_REQ_CODE_GUESSING_ACT);
+
+                }
+
 
             }
         });
@@ -133,7 +156,6 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         public AnonymousClass(String totalPermutation) {
             super(totalPermutation);
         }
-
 
 
         @Override
@@ -160,4 +182,31 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == PERM_REQ_CODE_GUESSING_ACT) {
+            if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                new DictionaryReadTask() {
+                    @Override
+                    protected void onPostExecute(Pair pair) {
+                        super.onPostExecute(pair);
+                        if (pair.checker) {
+
+                            toShowPassword.setText(pair.password);
+                        } else {
+                            toShowPassword.setText("Not in dictionary");
+                        }
+                    }
+                }.execute(actualPassword);
+            } else {
+                Toast.makeText(PasswordGuessingActivity.this,
+                        "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
