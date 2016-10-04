@@ -1,5 +1,6 @@
 package com.example.piyush.passwordhackingsystem;
 
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,6 +24,9 @@ public class SecondActivity extends AppCompatActivity {
     EditText minR, maxR, passwordStartFrom;
     CheckBox lowerCase, upperCase, number, specialCharacter;
     Button submit;
+    String actualPassword;
+
+    EditText removeLater;
 
     BigInteger totalPermutations;
     BigDecimal ETA;
@@ -33,6 +38,9 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        Intent i = getIntent();
+        actualPassword = i.getStringExtra("actualPassword");
+
         this.minR = (EditText) findViewById(R.id.second_activity_et_minRange);
         this.maxR = (EditText) findViewById(R.id.second_activity_et_maxRange);
         this.passwordStartFrom = (EditText) findViewById(R.id.second_activity_et_startsFrom);
@@ -41,11 +49,13 @@ public class SecondActivity extends AppCompatActivity {
         this.number = (CheckBox) findViewById(R.id.second_activity_cb_number);
         this.specialCharacter = (CheckBox) findViewById(R.id.second_activity_cb_specialCharacter);
         this.submit = (Button) findViewById(R.id.second_activity_btn_submit);
-
+        this.removeLater = (EditText) findViewById(R.id.removeLater);
 
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 minRange = (Integer.valueOf(minR.getText().toString()));
                 maxRange = (Integer.valueOf(maxR.getText().toString()));
                 startsFrom = passwordStartFrom.getText().toString();
@@ -57,8 +67,28 @@ public class SecondActivity extends AppCompatActivity {
                 totalPermutations = getTotalPermutations();
                 ETA = getETA();
 
-                tv = (TextView) findViewById(R.id.test);
-                tv.setText(etaBeautiful(ETA));
+//                tv = (TextView) findViewById(R.id.test);
+//                tv.setText(etaBeautiful(ETA));
+
+                if (minRange < startsFrom.length()) {
+                    Toast.makeText(SecondActivity.this, "Min Range cannot be less than start from length", Toast.LENGTH_LONG).show();
+                } else {
+
+                    Intent i = new Intent(getApplicationContext(), PasswordGuessingActivity.class);
+                    i.putExtra("ETA", etaBeautiful(ETA).toString());
+                    i.putExtra("minRange", minRange);
+                    i.putExtra("maxRange", maxRange);
+                    i.putExtra("startsFrom", startsFrom);
+                    i.putExtra("containsLowerCase", containsLowerCase);
+                    i.putExtra("containsUpperCase", containsUpperCase);
+                    i.putExtra("containsNumber", containsNumber);
+                    i.putExtra("containsSpecialCharacter", containsSpecialCharacter);
+//                i.putExtra("actualPassword",actualPassword);
+                    i.putExtra("actualPassword", removeLater.getText().toString());
+                    i.putExtra("totalPermutations",totalPermutations.toString());
+
+                    startActivity(i);
+                }
             }
         });
 
