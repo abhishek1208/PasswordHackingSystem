@@ -91,16 +91,16 @@ public class PasswordGuessingActivity extends AppCompatActivity {
                     @Override
                     protected void onProgressUpdate(BigInteger... values) {
                         super.onProgressUpdate(values);
-                        BigDecimal decimalCount = new BigDecimal(values[0]);
-                        BigDecimal decimalTotalPers = new BigDecimal(totalPers);
+//                        BigDecimal decimalCount = new BigDecimal(values[0]);
+//                        BigDecimal decimalTotalPers = new BigDecimal(totalPers);
+//
+////                        BigDecimal perc = decimalCount.divideToIntegralValue(decimalTotalPers);
+//                        BigDecimal perc = decimalCount.divide(decimalTotalPers,2, RoundingMode.HALF_UP);
+//                        perc = perc.multiply(new BigDecimal("100"));
+//
+//                        int prog = Integer.valueOf(perc.toBigInteger().toString());
 
-//                        BigDecimal perc = decimalCount.divideToIntegralValue(decimalTotalPers);
-                        BigDecimal perc = decimalCount.divide(decimalTotalPers,2, RoundingMode.HALF_UP);
-                        perc = perc.multiply(new BigDecimal("100"));
-
-                        int prog = Integer.valueOf(perc.toBigInteger().toString());
-
-                        progressBar.setProgress(prog);
+                        progressBar.setProgress(Integer.valueOf(values[1].toString()));
                     }
                 }.execute(checkerPOJO);}
 

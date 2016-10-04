@@ -3,7 +3,9 @@ package com.example.piyush.passwordhackingsystem;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -69,6 +71,23 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, BigInteger, Pair> {
 
         if(osf.length() == length) {
             count = count.add(new BigInteger("1"));
+
+
+
+            BigDecimal decimalCount = new BigDecimal(count);
+            BigDecimal decimalTotalPers = new BigDecimal(totalPermutations);
+
+//                        BigDecimal perc = decimalCount.divideToIntegralValue(decimalTotalPers);
+            BigDecimal perc = decimalCount.divide(decimalTotalPers,2, RoundingMode.HALF_UP);
+            perc = perc.multiply(new BigDecimal("100"));
+
+            int prog = Integer.valueOf(perc.toBigInteger().toString());
+
+            if(prog%5 == 0 ) {
+                publishProgress(count, new BigInteger(String.valueOf(prog)));
+            }
+
+
             if(osf.equals(password)) {
                 Pair base = new Pair();
                 base.checker = true;
