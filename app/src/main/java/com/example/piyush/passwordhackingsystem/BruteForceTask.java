@@ -24,9 +24,12 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, BigInteger, Pair> {
         this.totalPermutations = totalPermutation;
     }
 
+
+
     @Override
     protected Pair doInBackground(CheckerPOJO... params) {
 
+        Log.d(TAG, "doInBackground: ");
         CheckerPOJO checkerPOJO = params[0];
         int minRange = checkerPOJO.getMinR();
         int maxRange = checkerPOJO.getMaxR();
@@ -92,6 +95,7 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, BigInteger, Pair> {
                 Pair base = new Pair();
                 base.checker = true;
                 base.password=osf;
+                publishProgress(count, new BigInteger(String.valueOf("100")));
                 return base;
             }
             else{

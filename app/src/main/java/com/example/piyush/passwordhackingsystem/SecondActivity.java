@@ -27,7 +27,7 @@ public class SecondActivity extends AppCompatActivity {
     Button submit;
     String actualPassword;
 
-    EditText removeLater;
+//    EditText removeLater;
 
     BigInteger totalPermutations;
     BigDecimal ETA;
@@ -50,7 +50,7 @@ public class SecondActivity extends AppCompatActivity {
         this.number = (CheckBox) findViewById(R.id.second_activity_cb_number);
         this.specialCharacter = (CheckBox) findViewById(R.id.second_activity_cb_specialCharacter);
         this.submit = (Button) findViewById(R.id.second_activity_btn_submit);
-        this.removeLater = (EditText) findViewById(R.id.removeLater);
+//        this.removeLater = (EditText) findViewById(R.id.removeLater);
 
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +76,8 @@ public class SecondActivity extends AppCompatActivity {
                 } else {
 
                     Intent i = new Intent(getApplicationContext(), PasswordGuessingActivity.class);
-                    i.putExtra("ETA", etaBeautiful(ETA).toString());
+                    i.putExtra("ETA", ETA.toBigInteger().toString());
+                    i.putExtra("ETAbeauty", etaBeautiful(ETA));
                     i.putExtra("minRange", minRange);
                     i.putExtra("maxRange", maxRange);
                     i.putExtra("startsFrom", startsFrom);
@@ -84,8 +85,8 @@ public class SecondActivity extends AppCompatActivity {
                     i.putExtra("containsUpperCase", containsUpperCase);
                     i.putExtra("containsNumber", containsNumber);
                     i.putExtra("containsSpecialCharacter", containsSpecialCharacter);
-//                i.putExtra("actualPassword",actualPassword);
-                    i.putExtra("actualPassword", removeLater.getText().toString());
+                i.putExtra("actualPassword",actualPassword);
+//                    i.putExtra("actualPassword", removeLater.getText().toString());
                     i.putExtra("totalPermutations",totalPermutations.toString());
                     Log.d(TAG, "onClick: Eta beautiful"+etaBeautiful(ETA));
 

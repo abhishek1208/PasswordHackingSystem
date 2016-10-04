@@ -19,12 +19,12 @@ public class WelcomeActivity extends AppCompatActivity {
         delayRunnable=new Runnable() {
             @Override
             public void run() {
-                Intent i=new Intent(WelcomeActivity.this,SecondActivity.class);
+                Intent i=new Intent(WelcomeActivity.this,LoginActivity.class);
                 startActivity(i);
 
             }
         };
-        handler.postDelayed(delayRunnable,3000);
+        handler.postDelayed(delayRunnable,2000);
 
 
 

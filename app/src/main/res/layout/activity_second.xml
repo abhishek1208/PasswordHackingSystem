@@ -153,16 +153,6 @@
         android:layout_toRightOf="@+id/second_activity_cb_specialCharacter"
         android:layout_toEndOf="@+id/second_activity_cb_specialCharacter" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/textView3"
-        android:layout_alignRight="@+id/test"
-        android:layout_alignEnd="@+id/test"
-        android:layout_marginTop="19dp"
-        android:id="@+id/removeLater"
-        android:hint="RemoveLater-PasswordCheck" />
+
 
 </RelativeLayout>

@@ -1,6 +1,11 @@
 package com.example.piyush.passwordhackingsystem;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -17,6 +23,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
 
     public static final String TAG = "GuessingActivity";
 
+    Button cancel;
     Button btn_brute;
     Button btn_dictionary;
     String ETA;
@@ -33,6 +40,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
     String totalPermutations;
     ProgressBar progressBar;
 
+    public static final int PERM_REQ_CODE_GUESSING_ACT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,74 +49,66 @@ public class PasswordGuessingActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setMax(100);
+        progressBar.setVisibility(View.GONE);
+
 
         Intent i = getIntent();
         ETA = i.getStringExtra("ETA");
-        minR = i.getIntExtra("minRange",0);
-        maxR = i.getIntExtra("maxRange",0);
+        minR = i.getIntExtra("minRange", 0);
+        maxR = i.getIntExtra("maxRange", 0);
         startsFrom = i.getStringExtra("startsFrom");
-        containsUpper = i.getBooleanExtra("containsUpperCase",false);
-        containsLower = i.getBooleanExtra("containsLowerCase",false);
-        containsNumber = i.getBooleanExtra("containsNumber",false);
-        containsSpecial = i.getBooleanExtra("containsSpecialCharacter",false);
+        containsUpper = i.getBooleanExtra("containsUpperCase", false);
+        containsLower = i.getBooleanExtra("containsLowerCase", false);
+        containsNumber = i.getBooleanExtra("containsNumber", false);
+        containsSpecial = i.getBooleanExtra("containsSpecialCharacter", false);
         actualPassword = i.getStringExtra("actualPassword");
         totalPermutations = i.getStringExtra("totalPermutations");
         final BigInteger totalPers = new BigInteger(totalPermutations);
         eta = (TextView) findViewById(R.id.activity_password_guessing_tv_eta);
-        eta.setText(ETA);
+        eta.setText(i.getStringExtra("ETAbeauty"));
         toShowPassword = (TextView) findViewById(R.id.activity_password_guessing_tv_password);
 
         btn_brute = (Button) findViewById(R.id.activity_password_guessing_btn_bruteFroce);
         btn_dictionary = (Button) findViewById(R.id.activity_password_guessing_btn_dictionary);
+        cancel = (Button) findViewById(R.id.cancel_button);
 
+        BigInteger etaBig = new BigInteger(ETA);
+
+        if (etaBig.compareTo(new BigInteger("600000")) == 1) {
+            btn_brute.setEnabled(false);
+
+        } else {
+
+            btn_brute.setEnabled(true);
+        }
 
 
         btn_brute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
 
-                final long startTime=System.currentTimeMillis();
+                final long startTime = System.currentTimeMillis();
 
-                CheckerPOJO checkerPOJO = new CheckerPOJO(actualPassword,minR,maxR,startsFrom,containsNumber,
-                        containsUpper,containsLower,containsSpecial);
+                CheckerPOJO checkerPOJO = new CheckerPOJO(actualPassword, minR, maxR, startsFrom, containsNumber,
+                        containsUpper, containsLower, containsSpecial);
 
-                if(!actualPassword.startsWith(startsFrom)){
+                if (!actualPassword.startsWith(startsFrom)) {
                     toShowPassword.setText("Parameters Were Wrong");
+                } else {
+
+                    final AnonymousClass anonymousClass = new AnonymousClass(totalPermutations);
+
+                    anonymousClass.execute(checkerPOJO);
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            anonymousClass.cancel(true);
+                        }
+                    });
+
                 }
-                else{
-                new BruteForceTask(totalPermutations) {
-
-                    @Override
-                    protected void onPostExecute(Pair pair) {
-                         long endTime;
-
-                        super.onPostExecute(pair);
-                        if(pair.checker) {
-
-                            toShowPassword.setText(pair.password);
-                        }
-                        else{
-                            toShowPassword.setText("Parameters Were Wrong");
-                        }
-                        endTime=System.currentTimeMillis();
-                        Log.d(TAG, "onPostExecute: Time taken"+String.valueOf(endTime-startTime));
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(BigInteger... values) {
-                        super.onProgressUpdate(values);
-//                        BigDecimal decimalCount = new BigDecimal(values[0]);
-//                        BigDecimal decimalTotalPers = new BigDecimal(totalPers);
-//
-////                        BigDecimal perc = decimalCount.divideToIntegralValue(decimalTotalPers);
-//                        BigDecimal perc = decimalCount.divide(decimalTotalPers,2, RoundingMode.HALF_UP);
-//                        perc = perc.multiply(new BigDecimal("100"));
-//
-//                        int prog = Integer.valueOf(perc.toBigInteger().toString());
-
-                        progressBar.setProgress(Integer.valueOf(values[1].toString()));
-                    }
-                }.execute(checkerPOJO);}
 
             }
         });
@@ -117,23 +117,96 @@ public class PasswordGuessingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                new DictionaryReadTask() {
-                    @Override
-                    protected void onPostExecute(Pair pair) {
-                        super.onPostExecute(pair);
-                        if(pair.checker) {
 
-                            toShowPassword.setText(pair.password);
+                int permResult = ContextCompat.checkSelfPermission(PasswordGuessingActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+
+
+                if (permResult == PackageManager.PERMISSION_GRANTED) {
+                    new DictionaryReadTask() {
+                        @Override
+                        protected void onPostExecute(Pair pair) {
+                            super.onPostExecute(pair);
+                            if (pair.checker) {
+
+                                toShowPassword.setText(pair.password);
+                            } else {
+                                toShowPassword.setText("Not in dictionary");
+                            }
                         }
-                        else{
-                            toShowPassword.setText("Not in dictionary");
-                        }
-                    }
-                }.execute(actualPassword);
+                    }.execute(actualPassword);
+
+                } else {
+
+
+                    ActivityCompat.requestPermissions(PasswordGuessingActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PERM_REQ_CODE_GUESSING_ACT);
+
+                }
+
 
             }
         });
 
     }
 
+    public class AnonymousClass extends BruteForceTask {
+
+        public AnonymousClass(String totalPermutation) {
+            super(totalPermutation);
+        }
+
+
+        @Override
+        protected void onPostExecute(Pair pair) {
+            long endTime;
+
+            Log.d(TAG, "onPostExecute: ");
+            super.onPostExecute(pair);
+            if (pair.checker) {
+
+                toShowPassword.setText(pair.password);
+            } else {
+                toShowPassword.setText("Parameters Were Wrong");
+            }
+            endTime = System.currentTimeMillis();
+//            Log.d(TAG, "onPostExecute: Time taken" + String.valueOf(endTime - startTime));
+        }
+
+        @Override
+        protected void onProgressUpdate(BigInteger... values) {
+            super.onProgressUpdate(values);
+
+            progressBar.setProgress(Integer.valueOf(values[1].toString()));
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == PERM_REQ_CODE_GUESSING_ACT) {
+            if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                new DictionaryReadTask() {
+                    @Override
+                    protected void onPostExecute(Pair pair) {
+                        super.onPostExecute(pair);
+                        if (pair.checker) {
+
+                            toShowPassword.setText(pair.password);
+                        } else {
+                            toShowPassword.setText("Not in dictionary");
+                        }
+                    }
+                }.execute(actualPassword);
+            } else {
+                Toast.makeText(PasswordGuessingActivity.this,
+                        "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
