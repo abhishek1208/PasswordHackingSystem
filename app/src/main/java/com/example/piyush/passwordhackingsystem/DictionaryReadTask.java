@@ -33,12 +33,13 @@ public class DictionaryReadTask extends AsyncTask<String, Void, Pair> {
         String buffer = "";
         while (buffer != null) {
             try {
-                buffer = fileReader.readLine();
+
                 if (buffer.equals(params[0])) {
                     retVal.checker = true;
                     retVal.password = buffer;
                     return retVal;
                 }
+                buffer = fileReader.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }

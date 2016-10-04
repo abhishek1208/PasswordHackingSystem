@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+
 public class PasswordGuessingActivity extends AppCompatActivity {
 
     public static final String TAG = "GuessingActivity";
@@ -26,12 +30,17 @@ public class PasswordGuessingActivity extends AppCompatActivity {
     boolean containsSpecial;
     String actualPassword;
     TextView toShowPassword;
+    String totalPermutations;
+    ProgressBar progressBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_guessing);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(100);
 
         Intent i = getIntent();
         ETA = i.getStringExtra("ETA");
@@ -43,13 +52,16 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         containsNumber = i.getBooleanExtra("containsNumber",false);
         containsSpecial = i.getBooleanExtra("containsSpecialCharacter",false);
         actualPassword = i.getStringExtra("actualPassword");
-
+        totalPermutations = i.getStringExtra("totalPermutations");
+        final BigInteger totalPers = new BigInteger(totalPermutations);
         eta = (TextView) findViewById(R.id.activity_password_guessing_tv_eta);
         eta.setText(ETA);
         toShowPassword = (TextView) findViewById(R.id.activity_password_guessing_tv_password);
 
         btn_brute = (Button) findViewById(R.id.activity_password_guessing_btn_bruteFroce);
         btn_dictionary = (Button) findViewById(R.id.activity_password_guessing_btn_dictionary);
+
+
 
         btn_brute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +70,11 @@ public class PasswordGuessingActivity extends AppCompatActivity {
                 CheckerPOJO checkerPOJO = new CheckerPOJO(actualPassword,minR,maxR,startsFrom,containsNumber,
                         containsUpper,containsLower,containsSpecial);
 
-                new BruteForceTask() {
+                if(!actualPassword.startsWith(startsFrom)){
+                    toShowPassword.setText("Parameters Were Wrong");
+                }
+                else{
+                new BruteForceTask(totalPermutations) {
 
                     @Override
                     protected void onPostExecute(Pair pair) {
@@ -71,7 +87,22 @@ public class PasswordGuessingActivity extends AppCompatActivity {
                             toShowPassword.setText("Parameters Were Wrong");
                         }
                     }
-                }.execute(checkerPOJO);
+
+                    @Override
+                    protected void onProgressUpdate(BigInteger... values) {
+                        super.onProgressUpdate(values);
+                        BigDecimal decimalCount = new BigDecimal(values[0]);
+                        BigDecimal decimalTotalPers = new BigDecimal(totalPers);
+
+//                        BigDecimal perc = decimalCount.divideToIntegralValue(decimalTotalPers);
+                        BigDecimal perc = decimalCount.divide(decimalTotalPers,2, RoundingMode.HALF_UP);
+                        perc = perc.multiply(new BigDecimal("100"));
+
+                        int prog = Integer.valueOf(perc.toBigInteger().toString());
+
+                        progressBar.setProgress(prog);
+                    }
+                }.execute(checkerPOJO);}
 
             }
         });

@@ -3,16 +3,24 @@ package com.example.piyush.passwordhackingsystem;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
  * Created by Piyush on 04-10-2016.
  */
 
-public class BruteForceTask extends AsyncTask<CheckerPOJO, Double, Pair> {
+public class BruteForceTask extends AsyncTask<CheckerPOJO, BigInteger, Pair> {
 
 
     public static final String TAG = "BruteTask";
+    BigInteger count;
+    String totalPermutations;
+
+    public BruteForceTask(String totalPermutation) {
+        count = new BigInteger("0");
+        this.totalPermutations = totalPermutation;
+    }
 
     @Override
     protected Pair doInBackground(CheckerPOJO... params) {
@@ -36,11 +44,12 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, Double, Pair> {
         Pair retVal = new Pair();
         retVal.checker = false;
         retVal.password = "NULL";
-        Log.d(TAG, "doInBackground: " + toBePassedinMatcher);
+//        Log.d(TAG, "doInBackground: " + toBePassedinMatcher);
 
         for(int i = withoutStarts ; i<= withoutStartsUpperLimit ; i++) {
             Pair answer = help(dataset(containsUpper,containsLower,containsNumber,containsSpecial), "" ,
                     toBePassedinMatcher.toString(),i);
+//            publishProgress(count);
             if(answer.checker) {
                 retVal.checker = true;
                 retVal.password = startsFrom;
@@ -49,6 +58,9 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, Double, Pair> {
             }
         }
 
+        Log.d(TAG, "doInBackground: total pers " + totalPermutations);
+
+        Log.d(TAG, "doInBackground: count" + count.toString());
         return retVal;
     }
 
@@ -56,7 +68,7 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, Double, Pair> {
 
 
         if(osf.length() == length) {
-
+            count = count.add(new BigInteger("1"));
             if(osf.equals(password)) {
                 Pair base = new Pair();
                 base.checker = true;
@@ -133,5 +145,7 @@ public class BruteForceTask extends AsyncTask<CheckerPOJO, Double, Pair> {
 
         return retVal;
     }
+
+
 
 }

@@ -85,6 +85,7 @@ public class SecondActivity extends AppCompatActivity {
                     i.putExtra("containsSpecialCharacter", containsSpecialCharacter);
 //                i.putExtra("actualPassword",actualPassword);
                     i.putExtra("actualPassword", removeLater.getText().toString());
+                    i.putExtra("totalPermutations",totalPermutations.toString());
 
                     startActivity(i);
                 }
