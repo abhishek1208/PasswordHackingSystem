@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PasswordGuessingActivity" />
-
+        <activity android:name=".StrengthActivity"></activity>
     </application>
 
 </manifest>
