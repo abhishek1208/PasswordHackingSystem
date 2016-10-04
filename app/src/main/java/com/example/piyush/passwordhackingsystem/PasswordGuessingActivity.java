@@ -26,7 +26,6 @@ public class PasswordGuessingActivity extends AppCompatActivity {
     boolean containsSpecial;
     String actualPassword;
     TextView toShowPassword;
-    ProgressBar progressBar;
 
 
     @Override
@@ -80,6 +79,20 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         btn_dictionary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                new DictionaryReadTask() {
+                    @Override
+                    protected void onPostExecute(Pair pair) {
+                        super.onPostExecute(pair);
+                        if(pair.checker) {
+
+                            toShowPassword.setText(pair.password);
+                        }
+                        else{
+                            toShowPassword.setText("Not in dictionary");
+                        }
+                    }
+                }.execute(actualPassword);
 
             }
         });
