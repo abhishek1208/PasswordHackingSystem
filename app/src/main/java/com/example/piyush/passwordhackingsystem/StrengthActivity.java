@@ -3,6 +3,9 @@ package com.example.piyush.passwordhackingsystem;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class StrengthActivity extends AppCompatActivity {
     TextView tv_strengths_numberofcharacters, tv_strengths_uppercaseletters, tv_strengths_lowercaseletters,
@@ -85,27 +90,52 @@ public class StrengthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                File f = new File(Environment.getExternalStorageDirectory(), "passwords.txt");
 
                 int permResult = ContextCompat.checkSelfPermission(StrengthActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE);
 
 
                 if (permResult == PackageManager.PERMISSION_GRANTED) {
-                    new DictionaryReadTask() {
-                        @Override
-                        protected void onPostExecute(Pair pair) {
-                            super.onPostExecute(pair);
-                            if (pair.checker) {
 
-                                tv_common.setText("YES");
-                            } else {
-                                tv_common.setText("NO");
+                    if (!f.exists()) {
+
+                        if(checkInternet()) {
+                        DictionaryDownloadTask dictionaryDownloadTask = new DictionaryDownloadTask();
+                        dictionaryDownloadTask.execute();
+
+                        new DictionaryReadTask() {
+                            @Override
+                            protected void onPostExecute(Pair pair) {
+                                super.onPostExecute(pair);
+                                if (pair.checker) {
+
+                                    tv_common.setText("YES");
+                                } else {
+                                    tv_common.setText("NO");
+                                }
                             }
+                        }.execute(actualPassword);}
+                        else {
+                            Toast.makeText(StrengthActivity.this, "Connect to the Internet", Toast.LENGTH_SHORT).show();
                         }
-                    }.execute(actualPassword);
+                    } else {
+
+                        new DictionaryReadTask() {
+                            @Override
+                            protected void onPostExecute(Pair pair) {
+                                super.onPostExecute(pair);
+                                if (pair.checker) {
+
+                                    tv_common.setText("YES");
+                                } else {
+                                    tv_common.setText("NO");
+                                }
+                            }
+                        }.execute(actualPassword);
+                    }
 
                 } else {
-
 
                     ActivityCompat.requestPermissions(StrengthActivity.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -242,7 +272,7 @@ public class StrengthActivity extends AppCompatActivity {
 
     public int consecutiveUpperCaseLetters(String str) {
         int retVal = 0;
-        for (int i = 2; i < str.length(); ++i) {
+        for (int i = 1; i < str.length(); ++i) {
             if ((str.charAt(i) >= 65 && str.charAt(i) <= 90) && (str.charAt(i - 1) >= 65 && str.charAt(i - 1) <= 90)) {
                 for (int j = i; j < str.length(); ++j, ++i) {
                     if ((str.charAt(i) >= 65 && str.charAt(i) <= 90)
@@ -264,8 +294,7 @@ public class StrengthActivity extends AppCompatActivity {
     public int consecutiveLowerCaseLetters(String str) {
         int retVal = 0;
         for (int i = 1; i < str.length(); ++i) {
-            if ((str.charAt(i) >= 97 && str.charAt(i) <= 122)
-                    && (str.charAt(i - 1) >= 97 && str.charAt(i - 1) <= 122)) {
+            if ((str.charAt(i) >= 97 && str.charAt(i) <= 122) && (str.charAt(i - 1) >= 97 && str.charAt(i - 1) <= 122)) {
 
                 for (int j = i; j < str.length(); ++j, ++i) {
                     if ((str.charAt(i) >= 97 && str.charAt(i) <= 122)
@@ -312,7 +341,7 @@ public class StrengthActivity extends AppCompatActivity {
         for (int i = 0; i < str.length(); i++) {
 
             int thisResult = 0;
-            while (i < str.length() - 1 && str.charAt(i + 1) - str.charAt(i) == 1 && str.charAt(i) >= 48 && str.charAt(i)<=57) {
+            while (i < str.length() - 1 && str.charAt(i + 1) - str.charAt(i) == 1 && str.charAt(i) >= 48 && str.charAt(i) <= 57) {
                 thisResult++;
                 i++;
             }
@@ -336,7 +365,7 @@ public class StrengthActivity extends AppCompatActivity {
         for (int i = 0; i < str.length(); i++) {
 
             int thisResult = 0;
-            while (i < str.length() - 1 && str.charAt(i + 1) - str.charAt(i) == 1 && ((str.charAt(i)<=90 && str.charAt(i)>=65) || (str.charAt(i) >=97 && str.charAt(i)<=122))) {
+            while (i < str.length() - 1 && str.charAt(i + 1) - str.charAt(i) == 1 && ((str.charAt(i) <= 90 && str.charAt(i) >= 65) || (str.charAt(i) >= 97 && str.charAt(i) <= 122))) {
                 thisResult++;
                 i++;
             }
@@ -360,22 +389,61 @@ public class StrengthActivity extends AppCompatActivity {
         if (requestCode == PERM_REQ_CODE_STRENGTH_ACT) {
             if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)
                     && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                new DictionaryReadTask() {
-                    @Override
-                    protected void onPostExecute(Pair pair) {
-                        super.onPostExecute(pair);
-                        if (pair.checker) {
 
-                            tv_common.setText("YES");
-                        } else {
-                            tv_common.setText("NO");
-                        }
+                File f = new File(Environment.getExternalStorageDirectory(), "passwords.txt");
+                if (!f.exists()) {
+                    if(checkInternet()) {
+                        DictionaryDownloadTask dictionaryDownloadTask = new DictionaryDownloadTask();
+                        dictionaryDownloadTask.execute();
+
+                        new DictionaryReadTask() {
+                            @Override
+                            protected void onPostExecute(Pair pair) {
+                                super.onPostExecute(pair);
+                                if (pair.checker) {
+
+                                    tv_common.setText("YES");
+                                } else {
+                                    tv_common.setText("NO");
+                                }
+                            }
+                        }.execute(actualPassword);}
+                    else {
+                        Toast.makeText(StrengthActivity.this, "Connect to the Internet", Toast.LENGTH_SHORT).show();
                     }
-                }.execute(actualPassword);
+                } else {
+
+                    new DictionaryReadTask() {
+                        @Override
+                        protected void onPostExecute(Pair pair) {
+                            super.onPostExecute(pair);
+                            if (pair.checker) {
+
+                                tv_common.setText("YES");
+                            } else {
+                                tv_common.setText("NO");
+                            }
+                        }
+                    }.execute(actualPassword);
+                }
             } else {
                 Toast.makeText(StrengthActivity.this,
                         "Permission not granted", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public boolean checkInternet () {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni != null && ni.isConnected()) {
+            return true;
+        }
+//        Log.d(TAG, "checkInternet: typeName" + ni.getTypeName());
+//        Log.d(TAG, "checkInternet: state(toString)" + ni.getState().toString());
+//        Log.d(TAG, "checkInternet: extraInfo" + ni.getExtraInfo());
+//        Log.d(TAG, "checkInternet: subtypeName" + ni.getSubtypeName());
+        return false;
     }
 }

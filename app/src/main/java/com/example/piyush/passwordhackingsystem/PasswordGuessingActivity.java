@@ -3,6 +3,9 @@ package com.example.piyush.passwordhackingsystem;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -117,27 +121,51 @@ public class PasswordGuessingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                File f = new File(Environment.getExternalStorageDirectory(), "passwords.txt");
 
                 int permResult = ContextCompat.checkSelfPermission(PasswordGuessingActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE);
 
 
                 if (permResult == PackageManager.PERMISSION_GRANTED) {
-                    new DictionaryReadTask() {
-                        @Override
-                        protected void onPostExecute(Pair pair) {
-                            super.onPostExecute(pair);
-                            if (pair.checker) {
 
-                                toShowPassword.setText(pair.password);
-                            } else {
-                                toShowPassword.setText("Not in dictionary");
-                            }
+                    if (!f.exists()) {
+                        if (checkInternet()) {
+                            DictionaryDownloadTask dictionaryDownloadTask = new DictionaryDownloadTask();
+                            dictionaryDownloadTask.execute();
+
+                            new DictionaryReadTask() {
+                                @Override
+                                protected void onPostExecute(Pair pair) {
+                                    super.onPostExecute(pair);
+                                    if (pair.checker) {
+
+                                        toShowPassword.setText(pair.password);
+                                    } else {
+                                        toShowPassword.setText("Not in dictionary");
+                                    }
+                                }
+                            }.execute(actualPassword);
+                        } else {
+                            Toast.makeText(PasswordGuessingActivity.this, "Connect to the Internet", Toast.LENGTH_SHORT).show();
                         }
-                    }.execute(actualPassword);
+                    } else {
+
+                        new DictionaryReadTask() {
+                            @Override
+                            protected void onPostExecute(Pair pair) {
+                                super.onPostExecute(pair);
+                                if (pair.checker) {
+
+                                    toShowPassword.setText(pair.password);
+                                } else {
+                                    toShowPassword.setText("Not in dictionary");
+                                }
+                            }
+                        }.execute(actualPassword);
+                    }
 
                 } else {
-
 
                     ActivityCompat.requestPermissions(PasswordGuessingActivity.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -189,18 +217,44 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         if (requestCode == PERM_REQ_CODE_GUESSING_ACT) {
             if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)
                     && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                new DictionaryReadTask() {
-                    @Override
-                    protected void onPostExecute(Pair pair) {
-                        super.onPostExecute(pair);
-                        if (pair.checker) {
 
-                            toShowPassword.setText(pair.password);
-                        } else {
-                            toShowPassword.setText("Not in dictionary");
-                        }
+                File f = new File(Environment.getExternalStorageDirectory(), "passwords.txt");
+
+                if (!f.exists()) {
+                    if (checkInternet()) {
+                        DictionaryDownloadTask dictionaryDownloadTask = new DictionaryDownloadTask();
+                        dictionaryDownloadTask.execute();
+
+                        new DictionaryReadTask() {
+                            @Override
+                            protected void onPostExecute(Pair pair) {
+                                super.onPostExecute(pair);
+                                if (pair.checker) {
+
+                                    toShowPassword.setText(pair.password);
+                                } else {
+                                    toShowPassword.setText("Not in dictionary");
+                                }
+                            }
+                        }.execute(actualPassword);
+                    } else {
+                        Toast.makeText(PasswordGuessingActivity.this, "Connect to the Internet", Toast.LENGTH_SHORT).show();
                     }
-                }.execute(actualPassword);
+                } else {
+
+                    new DictionaryReadTask() {
+                        @Override
+                        protected void onPostExecute(Pair pair) {
+                            super.onPostExecute(pair);
+                            if (pair.checker) {
+
+                                toShowPassword.setText(pair.password);
+                            } else {
+                                toShowPassword.setText("Not in dictionary");
+                            }
+                        }
+                    }.execute(actualPassword);
+                }
             } else {
                 Toast.makeText(PasswordGuessingActivity.this,
                         "Permission not granted", Toast.LENGTH_SHORT).show();
@@ -208,5 +262,19 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public boolean checkInternet() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni != null && ni.isConnected()) {
+            return true;
+        }
+//        Log.d(TAG, "checkInternet: typeName" + ni.getTypeName());
+//        Log.d(TAG, "checkInternet: state(toString)" + ni.getState().toString());
+//        Log.d(TAG, "checkInternet: extraInfo" + ni.getExtraInfo());
+//        Log.d(TAG, "checkInternet: subtypeName" + ni.getSubtypeName());
+        return false;
     }
 }
