@@ -56,6 +56,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
 
+
         Intent i = getIntent();
         ETA = i.getStringExtra("ETA");
         minR = i.getIntExtra("minRange", 0);
@@ -75,7 +76,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         btn_brute = (Button) findViewById(R.id.activity_password_guessing_btn_bruteFroce);
         btn_dictionary = (Button) findViewById(R.id.activity_password_guessing_btn_dictionary);
         cancel = (Button) findViewById(R.id.cancel_button);
-
+        cancel.setVisibility(View.GONE);
         BigInteger etaBig = new BigInteger(ETA);
 
         if (etaBig.compareTo(new BigInteger("600000")) == 1) {
@@ -91,6 +92,7 @@ public class PasswordGuessingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
+                cancel.setVisibility(View.VISIBLE);
 
                 final long startTime = System.currentTimeMillis();
 
