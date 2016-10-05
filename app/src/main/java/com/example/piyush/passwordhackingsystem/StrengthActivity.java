@@ -270,66 +270,71 @@ public class StrengthActivity extends AppCompatActivity {
         return retVal;
     }
 
-    public int consecutiveUpperCaseLetters(String str) {
-        int retVal = 0;
-        for (int i = 1; i < str.length(); ++i) {
-            if ((str.charAt(i) >= 65 && str.charAt(i) <= 90) && (str.charAt(i - 1) >= 65 && str.charAt(i - 1) <= 90)) {
-                for (int j = i; j < str.length(); ++j, ++i) {
-                    if ((str.charAt(i) >= 65 && str.charAt(i) <= 90)
-                            && (str.charAt(i - 1) >= 65 && str.charAt(i - 1) <= 90)) {
-                        retVal++;
-
-                    } else {
-                        retVal++;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return retVal;
-
+    public  int consecutiveNumbers(String str) {
+        return consecutives(str)[2];
     }
 
-    public int consecutiveLowerCaseLetters(String str) {
-        int retVal = 0;
-        for (int i = 1; i < str.length(); ++i) {
-            if ((str.charAt(i) >= 97 && str.charAt(i) <= 122) && (str.charAt(i - 1) >= 97 && str.charAt(i - 1) <= 122)) {
-
-                for (int j = i; j < str.length(); ++j, ++i) {
-                    if ((str.charAt(i) >= 97 && str.charAt(i) <= 122)
-                            && (str.charAt(i - 1) >= 97 && str.charAt(i - 1) <= 122)) {
-                        retVal++;
-
-                    } else {
-                        retVal++;
-                        break;
-                    }
-
-                }
-            }
-        }
-
-        return retVal;
-
+    public  int consecutiveUpperCaseLetters(String str) {
+        return consecutives(str)[0];
     }
 
-    public int consecutiveNumbers(String str) {
-        int retVal = 0;
-        for (int i = 1; i < str.length(); ++i) {
-            if ((str.charAt(i) >= 48 && str.charAt(i) <= 57) && (str.charAt(i - 1) >= 48 && str.charAt(i - 1) <= 57)) {
-                for (int j = i; j < str.length(); ++j, ++i) {
-                    if ((str.charAt(i) >= 48 && str.charAt(i) <= 57)
-                            && (str.charAt(i - 1) >= 48 && str.charAt(i - 1) <= 57)) {
-                        retVal++;
+    public  int consecutiveLowerCaseLetters(String str) {
+        return consecutives(str)[1];
+    }
 
-                    } else {
-                        retVal++;
-                        break;
-                    }
-                }
+    public  int[] consecutives(String s) {
+
+        int i = 0;
+
+        int u = 0;
+        int l = 0;
+        int n = 0;
+
+        while (i < s.length() - 1) {
+            int tempu = 0;
+            int templ = 0;
+            int tempn = 0;
+            while (Character.isUpperCase(s.charAt(i)) && Character.isUpperCase(s.charAt(i + 1))) {
+                i++;
+                tempu++;
+
+                if (i >= s.length() - 1)
+                    break;
             }
+            while (Character.isLowerCase(s.charAt(i)) && Character.isLowerCase(s.charAt(i + 1))) {
+                i++;
+                templ++;
+
+                if (i >= s.length() - 1)
+                    break;
+            }
+            while (Character.isDigit(s.charAt(i)) && Character.isDigit(s.charAt(i + 1))) {
+                i++;
+                tempn++;
+
+                if (i >= s.length() - 1)
+                    break;
+            }
+
+            if (tempu != 0) {
+                tempu++;
+            }
+            if (templ != 0) {
+                templ++;
+            }
+            if (tempn != 0) {
+                tempn++;
+            }
+
+            u += tempu;
+            l += templ;
+            n += tempn;
+
+            i++;
+
         }
+
+        int[] retVal = { u, l, n };
 
         return retVal;
     }
