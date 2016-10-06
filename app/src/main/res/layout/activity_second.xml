@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,150 +10,140 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.piyush.passwordhackingsystem.SecondActivity">
 
-    <TextView
-
-        android:textAppearance="?android:textAppearanceLarge"
-        android:id="@+id/textView"
+    <LinearLayout
+        android:paddingTop="2dp"
+        android:id="@+id/secondAct_LinearLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Range"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/second_activity_et_minRange"
-        android:ems="4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:fontFamily="sans-serif"
+            android:text="Min. Length"
+            android:textAppearance="?android:textAppearanceLarge" />
 
-        android:hint="5"
-        android:inputType="number"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:fontFamily="sans-serif"
+            android:text="Max. Length"
+            android:textAppearance="?android:textAppearanceLarge" />
 
-        android:layout_alignTop="@+id/second_activity_et_maxRange"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView" />
-    <!--android:layout_marginLeft="48dp"-->
-    <!--android:layout_marginStart="48dp"-->
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_height="50dp"
+            android:text="Starts From"
+            android:textAppearance="?android:textAppearanceLarge" />
 
-    <TextView
-        android:textAppearance="?android:textAppearanceLarge"
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="to"
-        android:layout_alignBottom="@+id/second_activity_et_minRange"
-        android:layout_toRightOf="@+id/second_activity_et_minRange"
-        android:layout_toEndOf="@+id/second_activity_et_minRange" />
 
-    <EditText
-        android:id="@+id/second_activity_et_maxRange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="10"
-        android:ems="4"
-        android:inputType="number"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2" />
+    </LinearLayout>
+
 
     <TextView
-        android:textAppearance="?android:textAppearanceLarge"
-        android:id="@+id/textView3"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Starts From"
-        android:layout_below="@+id/textView"
+        android:fontFamily="sans-serif"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="54dp" />
-
-
-    <EditText
-        android:id="@+id/second_activity_et_startsFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="hey"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/second_activity_et_maxRange"
-        android:layout_alignStart="@+id/second_activity_et_maxRange" />
-
-    <TextView
-        android:textAppearance="?android:textAppearanceLarge"
-        android:text="Contains:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
+        android:layout_below="@+id/secondAct_LinearLeft"
         android:layout_marginTop="84dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:text="Contains:"
+        android:textAppearance="?android:textAppearanceLarge" />
 
     <CheckBox
-        android:text="Lower-case"
         android:id="@+id/second_activity_cb_lowerCase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
+        android:fontFamily="sans-serif"
+        android:layout_alignEnd="@+id/textView4"
         android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
+        android:paddingTop="5dp"
+        android:layout_below="@+id/textView4"
+        android:text="Lower case" />
 
     <CheckBox
-        android:text="Upper-case"
         android:id="@+id/second_activity_cb_upperCase"
+        android:paddingTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/second_activity_cb_lowerCase"
+        android:fontFamily="sans-serif"
+        android:layout_alignEnd="@+id/textView4"
         android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
+        android:layout_below="@+id/second_activity_cb_lowerCase"
+        android:text="Upper case" />
 
     <CheckBox
-        android:text="Number"
         android:id="@+id/second_activity_cb_number"
         android:layout_width="wrap_content"
+        android:paddingTop="5dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/second_activity_cb_upperCase"
+        android:fontFamily="sans-serif"
         android:layout_alignLeft="@+id/second_activity_cb_upperCase"
-        android:layout_alignStart="@+id/second_activity_cb_upperCase" />
+        android:layout_alignStart="@+id/second_activity_cb_upperCase"
+        android:layout_below="@+id/second_activity_cb_upperCase"
+        android:text="Number" />
 
     <CheckBox
-        android:text="Special Character"
         android:id="@+id/second_activity_cb_specialCharacter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
         android:layout_below="@+id/second_activity_cb_number"
-        android:layout_toLeftOf="@+id/test"
-        android:layout_toStartOf="@+id/test" />
+
+        android:text="Special Character" />
 
     <Button
-        android:text="Submit"
         android:id="@+id/second_activity_btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:fontFamily="sans-serif"
+        android:layout_centerHorizontal="true"
+        android:text="Submit" />
 
-    <TextView
-        android:id="@+id/test"
+    <LinearLayout
+        android:id="@+id/secondAct_LinearRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Submit!"
-        android:layout_below="@+id/textView5"
-        android:layout_toRightOf="@+id/textView3"
-        android:layout_toEndOf="@+id/textView3"
-        android:textSize="20dp" />
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/second_activity_btn_submit"
+        android:layout_toEndOf="@+id/second_activity_btn_submit">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hacking Time"
-        android:id="@+id/textView5"
-        android:textSize="30dp"
-        android:layout_below="@+id/second_activity_cb_specialCharacter"
-        android:layout_toRightOf="@+id/second_activity_cb_specialCharacter"
-        android:layout_toEndOf="@+id/second_activity_cb_specialCharacter" />
+        <EditText
 
+            android:id="@+id/et1"
+            android:inputType="number"
+            android:ems="4"
+            android:layout_width="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_height="wrap_content"
+            android:hint="5" />
+
+        <EditText
+            android:id="@+id/et2"
+            android:inputType="number"
+            android:fontFamily="sans-serif"
+
+            android:ems="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="10" />
+
+        <EditText
+          android:id="@+id/et3"
+            android:fontFamily="sans-serif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="4"
+            android:hint="pass"
+            android:paddingTop="15dp" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

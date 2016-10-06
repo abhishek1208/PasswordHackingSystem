@@ -44,9 +44,9 @@ public class SecondActivity extends AppCompatActivity {
         Intent i = getIntent();
         actualPassword = i.getStringExtra("actualPassword");
 
-        this.minR = (EditText) findViewById(R.id.second_activity_et_minRange);
-        this.maxR = (EditText) findViewById(R.id.second_activity_et_maxRange);
-        this.passwordStartFrom = (EditText) findViewById(R.id.second_activity_et_startsFrom);
+        this.minR = (EditText) findViewById(R.id.et1);
+        this.maxR = (EditText) findViewById(R.id.et2);
+        this.passwordStartFrom = (EditText) findViewById(R.id.et3);
         this.lowerCase = (CheckBox) findViewById(R.id.second_activity_cb_lowerCase);
         this.upperCase = (CheckBox) findViewById(R.id.second_activity_cb_upperCase);
         this.number = (CheckBox) findViewById(R.id.second_activity_cb_number);
