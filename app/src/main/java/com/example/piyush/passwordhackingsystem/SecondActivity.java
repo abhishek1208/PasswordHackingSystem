@@ -27,13 +27,15 @@ public class SecondActivity extends AppCompatActivity {
     Button submit;
     String actualPassword;
 
-//    EditText removeLater;
 
     BigInteger totalPermutations;
     BigDecimal ETA;
 
+    Boolean invalidInput;
+
     TextView tv;
-    public static final String TAG="SecondActivity";
+    public static final String TAG = "SecondActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +54,19 @@ public class SecondActivity extends AppCompatActivity {
         this.submit = (Button) findViewById(R.id.second_activity_btn_submit);
 //        this.removeLater = (EditText) findViewById(R.id.removeLater);
 
+
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                invalidInput = false;
 
-                minRange = (Integer.valueOf(minR.getText().toString()));
-                maxRange = (Integer.valueOf(maxR.getText().toString()));
+                if (minR.getText().toString().equals("") || maxR.getText().toString().equals("")) {
+                    invalidInput = true;
+                } else {
+                    minRange = (Integer.valueOf(minR.getText().toString()));
+                    maxRange = (Integer.valueOf(maxR.getText().toString()));
+                }
                 startsFrom = passwordStartFrom.getText().toString();
                 containsLowerCase = lowerCase.isChecked();
                 containsUpperCase = upperCase.isChecked();
@@ -71,8 +79,21 @@ public class SecondActivity extends AppCompatActivity {
 //                tv = (TextView) findViewById(R.id.test);
 //                tv.setText(etaBeautiful(ETA));
 
-                if (minRange < startsFrom.length()) {
-                    Toast.makeText(SecondActivity.this, "Min Range cannot be less than start from length", Toast.LENGTH_LONG).show();
+
+
+
+
+                if (minRange > maxRange) {
+                    invalidInput = true;
+                } else if (minRange < startsFrom.length()) {
+                    invalidInput = true;
+                } else if (startsFrom.length() > maxRange) {
+                    invalidInput = true;
+                }
+
+
+                if (invalidInput) {
+                    Toast.makeText(SecondActivity.this, "Invalid Parameters", Toast.LENGTH_LONG).show();
                 } else {
 
                     Intent i = new Intent(getApplicationContext(), PasswordGuessingActivity.class);
@@ -85,10 +106,10 @@ public class SecondActivity extends AppCompatActivity {
                     i.putExtra("containsUpperCase", containsUpperCase);
                     i.putExtra("containsNumber", containsNumber);
                     i.putExtra("containsSpecialCharacter", containsSpecialCharacter);
-                i.putExtra("actualPassword",actualPassword);
+                    i.putExtra("actualPassword", actualPassword);
 //                    i.putExtra("actualPassword", removeLater.getText().toString());
-                    i.putExtra("totalPermutations",totalPermutations.toString());
-                    Log.d(TAG, "onClick: Eta beautiful"+etaBeautiful(ETA));
+                    i.putExtra("totalPermutations", totalPermutations.toString());
+                    Log.d(TAG, "onClick: Eta beautiful" + etaBeautiful(ETA));
 
                     startActivity(i);
                 }
