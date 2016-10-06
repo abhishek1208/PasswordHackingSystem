@@ -51,7 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         strengthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(LoginActivity.this,StrengthActivity.class);
+                i.putExtra("actualPassword",passwordText.getText().toString());
+                startActivity(i);
             }
         });
 
