@@ -1,7 +1,10 @@
-package com.example.piyush.passwordhackingsystem;
+package com.example.piyush.passwordhackingsystem.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.piyush.passwordhackingsystem.CheckerPOJO;
+import com.example.piyush.passwordhackingsystem.Pair;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

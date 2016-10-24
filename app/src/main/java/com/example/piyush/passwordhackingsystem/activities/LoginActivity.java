@@ -1,4 +1,4 @@
-package com.example.piyush.passwordhackingsystem;
+package com.example.piyush.passwordhackingsystem.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+
+import com.example.piyush.passwordhackingsystem.R;
 
 public class LoginActivity extends AppCompatActivity {
 

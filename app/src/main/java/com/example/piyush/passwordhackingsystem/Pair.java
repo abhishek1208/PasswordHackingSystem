@@ -6,6 +6,6 @@ package com.example.piyush.passwordhackingsystem;
 
 public class Pair {
 
-    String password;
-    boolean checker;
+    public String password;
+    public boolean checker;
 }

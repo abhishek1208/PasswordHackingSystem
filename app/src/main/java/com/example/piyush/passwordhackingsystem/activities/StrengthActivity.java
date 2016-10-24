@@ -1,4 +1,4 @@
-package com.example.piyush.passwordhackingsystem;
+package com.example.piyush.passwordhackingsystem.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,6 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.piyush.passwordhackingsystem.tasks.DictionaryDownloadTask;
+import com.example.piyush.passwordhackingsystem.tasks.DictionaryReadTask;
+import com.example.piyush.passwordhackingsystem.Pair;
+import com.example.piyush.passwordhackingsystem.R;
 
 import java.io.File;
 

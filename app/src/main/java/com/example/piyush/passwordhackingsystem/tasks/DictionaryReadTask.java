@@ -1,7 +1,9 @@
-package com.example.piyush.passwordhackingsystem;
+package com.example.piyush.passwordhackingsystem.tasks;
 
 import android.os.AsyncTask;
 import android.os.Environment;
+
+import com.example.piyush.passwordhackingsystem.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;

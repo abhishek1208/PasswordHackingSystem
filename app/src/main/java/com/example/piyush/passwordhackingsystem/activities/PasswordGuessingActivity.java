@@ -1,4 +1,4 @@
-package com.example.piyush.passwordhackingsystem;
+package com.example.piyush.passwordhackingsystem.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -18,10 +18,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.piyush.passwordhackingsystem.tasks.BruteForceTask;
+import com.example.piyush.passwordhackingsystem.CheckerPOJO;
+import com.example.piyush.passwordhackingsystem.tasks.DictionaryDownloadTask;
+import com.example.piyush.passwordhackingsystem.tasks.DictionaryReadTask;
+import com.example.piyush.passwordhackingsystem.Pair;
+import com.example.piyush.passwordhackingsystem.R;
+
 import java.io.File;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 
 public class PasswordGuessingActivity extends AppCompatActivity {
 
