@@ -38,24 +38,8 @@ public class StrengthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strength);
-        tv_strengths_numberofcharacters = (TextView) findViewById(R.id.tv_strengths_numberofcharacters);
-        tv_strengths_uppercaseletters = (TextView) findViewById(R.id.tv_strengths_uppercaseletters);
-        tv_strengths_lowercaseletters = (TextView) findViewById(R.id.tv_strengths_lowercaseletters);
-        tv_strengths_numbers = (TextView) findViewById(R.id.tv_strengths_numbers);
-        tv_strengths_symbols = (TextView) findViewById(R.id.tv_strengths_symbols);
-        tv_strengths_midnumorsymbol = (TextView) findViewById(R.id.tv_strengths_midnumorsymbol);
-        tv_weakness_lettersonly = (TextView) findViewById(R.id.tv_weakness_lettersonly);
-        tv_weakness_numbersonly = (TextView) findViewById(R.id.tv_weakness_numbersonly);
-        tv_weakness_repeatchars = (TextView) findViewById(R.id.tv_weakness_repeatchars);
-        tv_consecutiveupper = (TextView) findViewById(R.id.tv_consecutiveupper);
-        tv_consecutivelower = (TextView) findViewById(R.id.tv_consecutivelower);
-        tv_consecutivenumbers = (TextView) findViewById(R.id.tv_consecutivenumbers);
-        tv_sequentialletters = (TextView) findViewById(R.id.tv_sequentialletters);
-        tv_sequentialnumbers = (TextView) findViewById(R.id.tv_sequentialnumbers);
 
-        tv_strentghperc = (TextView) findViewById(R.id.tv_strentghperc);
-        btn_commonpass = (Button) findViewById(R.id.btn_commonpass);
-        tv_common = (TextView) findViewById(R.id.tv_common);
+        initViews();
 
         Intent i = getIntent();
         actualPassword = i.getStringExtra("actualPassword");
@@ -172,6 +156,26 @@ public class StrengthActivity extends AppCompatActivity {
         tv_strentghperc.setText(String.valueOf(percentage));
 
 
+    }
+
+    public void initViews(){
+        tv_strengths_numberofcharacters = (TextView) findViewById(R.id.tv_strengths_numberofcharacters);
+        tv_strengths_uppercaseletters = (TextView) findViewById(R.id.tv_strengths_uppercaseletters);
+        tv_strengths_lowercaseletters = (TextView) findViewById(R.id.tv_strengths_lowercaseletters);
+        tv_strengths_numbers = (TextView) findViewById(R.id.tv_strengths_numbers);
+        tv_strengths_symbols = (TextView) findViewById(R.id.tv_strengths_symbols);
+        tv_strengths_midnumorsymbol = (TextView) findViewById(R.id.tv_strengths_midnumorsymbol);
+        tv_weakness_lettersonly = (TextView) findViewById(R.id.tv_weakness_lettersonly);
+        tv_weakness_numbersonly = (TextView) findViewById(R.id.tv_weakness_numbersonly);
+        tv_weakness_repeatchars = (TextView) findViewById(R.id.tv_weakness_repeatchars);
+        tv_consecutiveupper = (TextView) findViewById(R.id.tv_consecutiveupper);
+        tv_consecutivelower = (TextView) findViewById(R.id.tv_consecutivelower);
+        tv_consecutivenumbers = (TextView) findViewById(R.id.tv_consecutivenumbers);
+        tv_sequentialletters = (TextView) findViewById(R.id.tv_sequentialletters);
+        tv_sequentialnumbers = (TextView) findViewById(R.id.tv_sequentialnumbers);
+        tv_strentghperc = (TextView) findViewById(R.id.tv_strentghperc);
+        btn_commonpass = (Button) findViewById(R.id.btn_commonpass);
+        tv_common = (TextView) findViewById(R.id.tv_common);
     }
 
     public int numberOfCharacters(String str) {
