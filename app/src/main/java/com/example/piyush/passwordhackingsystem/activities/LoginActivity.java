@@ -19,6 +19,8 @@ public class LoginActivity extends AppCompatActivity {
     Button hackingBtn;
     CheckBox showBox;
 
+    public static final int INPUT_TYPE_PASSWORD = 129;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked) {
-                    passwordText.setInputType(129);
+                    passwordText.setInputType(INPUT_TYPE_PASSWORD);
                 } else {
 
                     passwordText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
