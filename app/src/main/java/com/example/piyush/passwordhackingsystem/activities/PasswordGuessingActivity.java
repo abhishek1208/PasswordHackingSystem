@@ -3,6 +3,7 @@ package com.example.piyush.passwordhackingsystem.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
@@ -60,6 +61,8 @@ public class PasswordGuessingActivity extends AppCompatActivity {
         progressBar.setMax(100);
         progressBar.setVisibility(View.GONE);
 
+        progressBar.setBackgroundColor(Color.parseColor("#40ff60"));
+        progressBar.setDrawingCacheBackgroundColor(Color.parseColor("#40ff60"));
 
 
         Intent i = getIntent();

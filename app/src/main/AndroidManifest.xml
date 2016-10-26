@@ -27,7 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.PasswordGuessingActivity" />
+        <activity android:name=".activities.PasswordGuessingActivity"
+            android:theme="@style/Theme.AppTheme.Terminal"
+            />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.StrengthActivity"></activity>
     </application>
