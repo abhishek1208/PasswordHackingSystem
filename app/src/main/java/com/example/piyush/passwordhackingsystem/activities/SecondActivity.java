@@ -34,7 +34,7 @@ public class SecondActivity extends AppCompatActivity {
 
     Boolean invalidInput;
 
-    TextView tv;
+    public static final double TOTAL_ITERATIONS = 1.79769313486231570E+6;
     public static final String TAG = "SecondActivity";
 
     @Override
@@ -53,8 +53,6 @@ public class SecondActivity extends AppCompatActivity {
         this.number = (CheckBox) findViewById(R.id.second_activity_cb_number);
         this.specialCharacter = (CheckBox) findViewById(R.id.second_activity_cb_specialCharacter);
         this.submit = (Button) findViewById(R.id.second_activity_btn_submit);
-//        this.removeLater = (EditText) findViewById(R.id.removeLater);
-
 
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +175,7 @@ public class SecondActivity extends AppCompatActivity {
 
         double startTime = System.currentTimeMillis();
 
-        for (double i = 0; i < 1.79769313486231570E+6; i++) {
+        for (double i = 0; i < TOTAL_ITERATIONS; i++) {
             if ("abcdqewadvavfdsbffbdfgnhfjgdntyutdcbtfynbsv".equals("vndalisvdavdadbfddsfbadfdvnvlfa")) {
                 //Random Comparison between two strings.
             }
@@ -192,9 +190,8 @@ public class SecondActivity extends AppCompatActivity {
         BigDecimal ste = new BigDecimal(sampleTimeElapsed.toString());
 
 
-        ste = ste.divide(new BigDecimal("1.79769313486231570E+6"), 1000, RoundingMode.HALF_UP);
-        retVal = totalPers.multiply(ste).multiply(new BigDecimal("10000"));
-
+        ste = ste.divide(new BigDecimal(String.valueOf(TOTAL_ITERATIONS)), 1000, RoundingMode.HALF_UP);
+        retVal = totalPers.multiply(ste).multiply(new BigDecimal("10000")); //our hypothesis. (Error checking mechanism)
         return retVal;
 
     }
