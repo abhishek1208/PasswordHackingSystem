@@ -4,19 +4,25 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.piyush.passwordhackingsystem.R;
+import com.example.piyush.passwordhackingsystem.tasks.AesCbcWithIntegrity;
+
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 
 public class LoginActivity extends AppCompatActivity {
-
+    public static final String TAG="LoginActivity";
     EditText passwordText;
     Button strengthBtn;
-    Button hackingBtn;
+    Button hackingBtn, encryptBtn;
     CheckBox showBox;
 
     public static final int INPUT_TYPE_PASSWORD = 129;
@@ -30,11 +36,43 @@ public class LoginActivity extends AppCompatActivity {
         strengthBtn = (Button) findViewById(R.id.btn_strength);
         hackingBtn = (Button) findViewById(R.id.btn_hacking);
         showBox = (CheckBox) findViewById(R.id.checkBox);
+        encryptBtn = (Button) findViewById(R.id.btn_encrypt);
+        encryptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AesCbcWithIntegrity aes;
+                String keypass="1234",passtoencrypt="Abhishek123@te654";
+
+                try {
+                    byte[] salt=AesCbcWithIntegrity.generateSalt();
+                    AesCbcWithIntegrity.SecretKeys keys= AesCbcWithIntegrity.generateKeyFromPassword(keypass,salt);
+                    AesCbcWithIntegrity.CipherTextIvMac cipherTextIvMac = AesCbcWithIntegrity.encrypt(passtoencrypt, keys);
+                    //store or send to server
+                    String ciphertextString = cipherTextIvMac.toString();
+                    AesCbcWithIntegrity.SecretKeys keysdecrypttime= AesCbcWithIntegrity.generateKeyFromPassword(keypass,salt);
+                    AesCbcWithIntegrity.CipherTextIvMac cipherTextIvMac1 = new AesCbcWithIntegrity.CipherTextIvMac(ciphertextString);
+                    String plainText = AesCbcWithIntegrity.decryptString(cipherTextIvMac1, keys);
+                    Toast.makeText(LoginActivity.this, ciphertextString, Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG, "onClick: " + plainText);
+
+
+                }catch (UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                catch (GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
 
         showBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
+                if (!isChecked) {
                     passwordText.setInputType(INPUT_TYPE_PASSWORD);
                 } else {
 
@@ -46,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         hackingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this,SecondActivity.class);
-                i.putExtra("actualPassword",passwordText.getText().toString());
+                Intent i = new Intent(LoginActivity.this, SecondActivity.class);
+                i.putExtra("actualPassword", passwordText.getText().toString());
                 startActivity(i);
             }
         });
@@ -55,11 +93,11 @@ public class LoginActivity extends AppCompatActivity {
         strengthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this,StrengthScore.class);
+                Intent i = new Intent(LoginActivity.this, StrengthScore.class);
 
 
                 String actualPassword = passwordText.getText().toString();
-                i.putExtra("actualPassword",actualPassword);
+                i.putExtra("actualPassword", actualPassword);
 
 
                 int numOfChars = numberOfCharacters(actualPassword);
@@ -77,20 +115,20 @@ public class LoginActivity extends AppCompatActivity {
                 int sequentialNumbers = sequentialNumbers(actualPassword);
                 int sequentialLetters = sequentialLetters(actualPassword);
 
-                i.putExtra("numOfChars",numOfChars);
-                i.putExtra("upperCaseLetters",upperCaseLetters);
-                i.putExtra("lowerCaseLetters",lowerCaseLetters);
-                i.putExtra("numbers",numbers);
-                i.putExtra("specialCharacters",specialCharacters);
-                i.putExtra("lettersOnly",lettersOnly);
-                i.putExtra("numbersOnly",numbersOnly);
-                i.putExtra("midNumOrSymbols",midNumOrSymbols);
-                i.putExtra("repeatCharacters",repeatCharacters);
-                i.putExtra("consecutiveUpperCase",consecutiveUpperCase);
-                i.putExtra("consecutiveLowerCase",consecutiveLowerCase);
-                i.putExtra("consecutiveNumbers",consecutiveNumbers);
-                i.putExtra("sequentialNumbers",sequentialNumbers);
-                i.putExtra("sequentialLetters",sequentialLetters);
+                i.putExtra("numOfChars", numOfChars);
+                i.putExtra("upperCaseLetters", upperCaseLetters);
+                i.putExtra("lowerCaseLetters", lowerCaseLetters);
+                i.putExtra("numbers", numbers);
+                i.putExtra("specialCharacters", specialCharacters);
+                i.putExtra("lettersOnly", lettersOnly);
+                i.putExtra("numbersOnly", numbersOnly);
+                i.putExtra("midNumOrSymbols", midNumOrSymbols);
+                i.putExtra("repeatCharacters", repeatCharacters);
+                i.putExtra("consecutiveUpperCase", consecutiveUpperCase);
+                i.putExtra("consecutiveLowerCase", consecutiveLowerCase);
+                i.putExtra("consecutiveNumbers", consecutiveNumbers);
+                i.putExtra("sequentialNumbers", sequentialNumbers);
+                i.putExtra("sequentialLetters", sequentialLetters);
 
 
                 int score = 0;
@@ -108,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (percentage > 100) {
                     percentage = 99;
                 }
-                i.putExtra("perc",percentage);
+                i.putExtra("perc", percentage);
 
                 startActivity(i);
             }
@@ -217,19 +255,19 @@ public class LoginActivity extends AppCompatActivity {
         return retVal;
     }
 
-    public  int consecutiveNumbers(String str) {
+    public int consecutiveNumbers(String str) {
         return consecutives(str)[2];
     }
 
-    public  int consecutiveUpperCaseLetters(String str) {
+    public int consecutiveUpperCaseLetters(String str) {
         return consecutives(str)[0];
     }
 
-    public  int consecutiveLowerCaseLetters(String str) {
+    public int consecutiveLowerCaseLetters(String str) {
         return consecutives(str)[1];
     }
 
-    public  int[] consecutives(String s) {
+    public int[] consecutives(String s) {
 
         int i = 0;
 
@@ -281,7 +319,7 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        int[] retVal = { u, l, n };
+        int[] retVal = {u, l, n};
 
         return retVal;
     }
