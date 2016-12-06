@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AesCbcWithIntegrity aes;
-                String keypass="1234",passtoencrypt="Abhishek123@te654";
+                String keypass="1234",passtoencrypt="Mypasswordis12$";
 
                 try {
                     byte[] salt=AesCbcWithIntegrity.generateSalt();
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                     String ciphertextString = cipherTextIvMac.toString();
                     AesCbcWithIntegrity.SecretKeys keysdecrypttime= AesCbcWithIntegrity.generateKeyFromPassword(keypass,salt);
                     AesCbcWithIntegrity.CipherTextIvMac cipherTextIvMac1 = new AesCbcWithIntegrity.CipherTextIvMac(ciphertextString);
-                    String plainText = AesCbcWithIntegrity.decryptString(cipherTextIvMac1, keys);
+                    String plainText = AesCbcWithIntegrity.decryptString(cipherTextIvMac1, keysdecrypttime);
                     Toast.makeText(LoginActivity.this, ciphertextString, Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG, "onClick: " + plainText);
